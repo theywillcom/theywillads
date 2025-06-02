@@ -5,319 +5,467 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>광고 기획자를 꿈꾸는 여정</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <!-- Visualization & Content Choices:
-        - 제1부 (Planner's Role): Intro text, metaphors (탐정, 심리학자, 이야기꾼) with icons. Goal: Inform. 표1 (Terminology) as interactive clickable list/definitions. Goal: Organize/Inform. Interaction: Click to reveal. Justification: Clarity, engagement. Method: HTML/Tailwind, JS.
-        - 제2부 (Big Idea): Definition, Ogilvy quotes. Goal: Inform/Explain. "활동 아이디어" as interactive card. Goal: Engage. Interaction: Click to expand. Justification: Focus on core concept. Method: HTML/Tailwind, JS.
-        - 제3부 (Consumer Understanding): Key Ogilvy quotes, list of research methods with icons. Goal: Emphasize/Inform. "활동 아이디어" as interactive card. Goal: Engage. Justification: Reinforce principle. Method: HTML/Tailwind, JS.
-        - 제4부 (Brand Image/Positioning): Definitions, Ogilvy quotes. Goal: Explain/Compare. Maybe interactive toggles for definitions. Goal: Clarify. Justification: Differentiate concepts. Method: HTML/Tailwind, JS.
-        - 제5부 (Curiosity/Research): Ogilvy quotes on testing/knowledge. Goal: Inform/Inspire. "활동 아이디어" as interactive card. Goal: Engage. Justification: Highlight importance. Method: HTML/Tailwind, JS.
-        - 제6부 (Strategy to Ads): Creative brief, Ogilvy quotes on clarity/visuals. Goal: Explain process. Conceptual visual for "sound off test." Goal: Illustrate. Justification: Bridge theory and practice. Method: HTML/Tailwind.
-        - 제7부 (Timeless Advice): Ogilvy quotes on learning. Goal: Advise. 표2 (Golden Rules) as styled interactive cards. Goal: Summarize/Organize. Interaction: Clickable/Carousel. Justification: Actionable takeaways. Method: HTML/Tailwind, JS.
-        - 제8부 (Next Steps): Actionable list, final Ogilvy quote. Goal: Motivate. Checklist-style presentation. Goal: Guide. Justification: Practical send-off. Method: HTML/Tailwind.
-        - CONFIRMATION: NO SVG/Mermaid. Using HTML/Tailwind for structure & basic visuals/icons (Unicode or CSS), JS for interactions. No complex data charts needed. -->
+        - 제1부 (Planner's Role): Intro text, metaphors, interactive terminology list. Goal: Inform, Organize. Interaction: Click to reveal. Method: HTML/Tailwind, JS.
+        - 제2부 (Big Idea): Definitions, quotes, activity idea. Goal: Explain, Engage. ADDED: Gemini API for Big Idea inspiration - User inputs keywords, API generates ideas/questions. Interaction: Text input, button click, dynamic result display. Method: HTML/Tailwind, JS, Fetch API.
+        - 제3부 (Consumer Understanding): Quotes, research methods, activity idea. Goal: Emphasize, Inform. ADDED: Gemini API for Persona Elaboration - User inputs product & target, API generates detailed persona aspects. Interaction: Text inputs, button click, dynamic result display. Method: HTML/Tailwind, JS, Fetch API.
+        - 제4부 (Brand Image/Positioning): Definitions, quotes. Goal: Explain, Compare. Method: HTML/Tailwind, JS.
+        - 제5부 (Curiosity/Research): Quotes, activity idea. Goal: Inform, Inspire. Method: HTML/Tailwind, JS.
+        - 제6부 (Strategy to Ads): Creative brief explanation, quotes. Goal: Explain process. Method: HTML/Tailwind.
+        - 제7부 (Timeless Advice): Quotes, interactive Golden Rules. Goal: Advise, Summarize. Interaction: Clickable cards. Method: HTML/Tailwind, JS.
+        - 제8부 (Next Steps): Actionable list, final quote. Goal: Motivate, Guide. Method: HTML/Tailwind.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. Image placeholders added. Layout adjusted for readability.
+    -->
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #FDFBF6; /* Warm Beige background */
-            color: #3C3C3C; /* Dark Gray for text */
+            background-color: #F0F4F8; /* Light Blue-Gray background */
+            color: #333D4B; /* Darker Blue-Gray for text */
+        }
+        .font-poppins {
+            font-family: 'Poppins', sans-serif;
         }
         .nav-active {
             font-weight: bold;
-            color: #FF8C42; /* Accent color for active nav item */
+            color: #EF4444; /* Accent color (Red) for active nav item */
         }
         .content-section {
             background-color: #FFFFFF; /* White for content sections */
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 16px; /* More rounded corners */
+            padding: 2rem 1.5rem; /* Adjusted padding */
+            margin-bottom: 2.5rem; /* Increased margin */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            max-width: 800px; /* Max width for content sections for better readability */
+            margin-left: auto;
+            margin-right: auto;
         }
         .quote {
-            background-color: #FFF9F0; /* Lighter beige for quotes */
-            border-left: 4px solid #FF8C42; /* Accent color border */
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
+            background-color: #FFFBEB; /* Lighter Yellow for quotes */
+            border-left: 5px solid #F59E0B; /* Amber border */
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
             font-style: italic;
+            font-size: 0.95rem;
+        }
+        .quote p:first-child {
+            font-weight: 600;
+            color: #B45309; /* Darker Amber for quote text */
         }
         .activity-idea {
-            background-color: #E6FFFA; /* Light Teal for activity ideas */
-            border: 1px solid #A0F0E0;
-            padding: 1rem;
-            margin-top: 1rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #6EE7B7, #3B82F6); /* Teal to Blue gradient */
+            color: white;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .term-item { cursor: pointer; }
-        .term-definition { display: none; }
+        .activity-idea h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem; /* Larger font size for activity title */
+        }
+        .term-item { 
+            cursor: pointer; 
+            transition: background-color 0.2s ease-in-out;
+        }
+        .term-definition { 
+            display: none; 
+            background-color: #F9FAFB; /* Light gray for definition bg */
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
         .golden-rule-card {
-            background-color: #FFF3E0; /* Light Orange */
-            border: 1px solid #FFD180; /* Darker Orange */
+            background-color: #FFFAF0; /* FloralWhite */
+            border: 2px solid #FDBA74; /* Lighter Orange border */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .golden-rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(253, 186, 116, 0.4);
         }
         .icon-style {
-            font-size: 1.5rem;
-            margin-right: 0.5rem;
-            color: #FF8C42;
+            font-size: 1.8rem; /* Slightly larger icons */
+            margin-right: 0.6rem;
+            color: #EF4444; /* Red accent for icons */
+            vertical-align: middle;
         }
+        .section-image {
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            display: block;
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .text-content-block {
+            max-width: 650px; /* Max width for pure text blocks */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .gemini-feature {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #F3E8FF; /* Lighter Purple for Gemini features */
+            border-radius: 12px;
+            border: 1px solid #D8B4FE; /* Purple border */
+        }
+        .gemini-input, .gemini-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem; /* Increased padding */
+            border: 1px solid #C4B5FD; /* Lighter purple border */
+            border-radius: 0.5rem; /* More rounded */
+            margin-bottom: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.07);
+        }
+        .gemini-button {
+            background-color: #8B5CF6; /* Violet */
+            color: white;
+            padding: 0.75rem 1.5rem; /* Increased padding */
+            border-radius: 0.5rem;
+            font-weight: 700; /* Bolder */
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            text-transform: uppercase; /* Uppercase text */
+            letter-spacing: 0.05em;
+        }
+        .gemini-button:hover {
+            background-color: #7C3AED; /* Darker Violet */
+            transform: scale(1.03);
+        }
+        .gemini-button:disabled {
+            background-color: #C4B5FD;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        .gemini-result {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background-color: #FFFFFF;
+            border: 1px solid #DDD6FE; /* Light purple border */
+            border-radius: 0.5rem;
+            min-height: 100px;
+            white-space: pre-wrap; 
+            font-size: 0.95rem;
+            line-height: 1.7;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 24px; /* Larger spinner */
+            height: 24px;
+            border: 4px solid rgba(139, 92, 246, 0.2); /* Violet transparent */
+            border-radius: 50%;
+            border-top-color: #8B5CF6; /* Violet */
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 12px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .main-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900; /* Extra bold */
+            color: #D946EF; /* Fuchsia */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #EC4899; /* Pink */
+        }
+        .nav-link {
+             font-family: 'Poppins', sans-serif;
+             font-weight: 600;
+        }
+         .header-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #10B981; /* Emerald */
+        }
+
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3">
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="text-xl font-bold text-gray-800">광고 기획의 모든 것 🚀</div>
-                <div class="flex space-x-2 sm:space-x-4 text-sm sm:text-base">
-                    <a href="#part1" class="nav-link text-gray-600 hover:text-orange-500">1부</a>
-                    <a href="#part2" class="nav-link text-gray-600 hover:text-orange-500">2부</a>
-                    <a href="#part3" class="nav-link text-gray-600 hover:text-orange-500">3부</a>
-                    <a href="#part4" class="nav-link text-gray-600 hover:text-orange-500">4부</a>
-                    <a href="#part5" class="nav-link text-gray-600 hover:text-orange-500">5부</a>
-                    <a href="#part6" class="nav-link text-gray-600 hover:text-orange-500">6부</a>
-                    <a href="#part7" class="nav-link text-gray-600 hover:text-orange-500">7부</a>
-                    <a href="#part8" class="nav-link text-gray-600 hover:text-orange-500">8부</a>
+                <div class="text-2xl header-title">광고 마스터 여정 🚀</div>
+                <div class="flex space-x-3 sm:space-x-5 text-sm sm:text-base">
+                    <a href="#part1" class="nav-link text-gray-700 hover:text-red-500">1부</a>
+                    <a href="#part2" class="nav-link text-gray-700 hover:text-red-500">2부</a>
+                    <a href="#part3" class="nav-link text-gray-700 hover:text-red-500">3부</a>
+                    <a href="#part4" class="nav-link text-gray-700 hover:text-red-500">4부</a>
+                    <a href="#part5" class="nav-link text-gray-700 hover:text-red-500">5부</a>
+                    <a href="#part6" class="nav-link text-gray-700 hover:text-red-500">6부</a>
+                    <a href="#part7" class="nav-link text-gray-700 hover:text-red-500">7부</a>
+                    <a href="#part8" class="nav-link text-gray-700 hover:text-red-500">8부</a>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="container mx-auto px-4 sm:px-6 py-8">
-        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-gray-800">광고 기획자를 꿈꾸는 여정: 멋진 광고의 설계자</h1>
+    <main class="container mx-auto px-4 sm:px-6 py-10">
+        <h1 class="text-4xl sm:text-5xl main-title text-center mb-12">광고 기획자, 너도 될 수 있어! 🤩<br><span class="text-2xl font-semibold text-gray-600 font-noto-sans">멋진 광고의 설계자 되기</span></h1>
 
-        <section id="part1" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제1부: 광고 기획자가 되고 싶은 당신에게 – 광고 기획자는 과연 어떤 일을 할까?</h2>
-            <p class="mb-4">광고 기획자는 어떤 일을 하는 사람일까요? 단순히 광고를 만드는 사람이라고 생각하기 쉽지만, 그 역할은 훨씬 더 깊고 넓습니다. 광고 기획자는 <span class="icon-style">🕵️</span>탐정처럼 예리한 관찰력으로 시장과 소비자를 분석하고, <span class="icon-style">🧠</span>심리학자처럼 사람들의 마음을 파고들며, <span class="icon-style">🗣️</span>이야기꾼처럼 매력적인 메시지를 전달하는 역할을 합니다. 즉, 광고 캠페인의 ‘뇌’와 같은 존재로서, 광고가 왜 필요한지, 누구에게 어떤 이야기를 해야 하는지, 그리고 그 이야기가 왜 중요한지를 끊임없이 고민하고 답을 찾아냅니다.</p>
-            <p class="mb-4">광고 기획자는 기업이 판매하고자 하는 제품이나 서비스와 소비자가 실제로 중요하게 생각하는 가치 사이의 간극을 메우는 다리 역할을 합니다. 이러한 역할은 광고 캠페인 전체가 표류하거나 엉뚱한 방향으로 흘러가지 않도록 전략적인 방향을 제시하는 ‘<span class="icon-style">🧭</span>나침반’과 같습니다.</p>
+        <section id="part1" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제1부: 광고 기획자? <span class="text-pink-500">꿀잼</span> 직업일까? 🤔</h2>
+            <img src="https://placehold.co/700x350/FFE4E6/DB2777?text=광고+기획자는+누구일까?" alt="광고 기획자의 다양한 역할" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">광고 기획자는 어떤 일을 하는 사람일까요? 단순히 광고를 '만드는' 사람이라고 생각하기 쉽지만, 그 역할은 훨씬 더 깊고 넓답니다! 광고 기획자는 <span class="icon-style">🕵️</span>탐정처럼 날카롭게 시장과 소비자를 분석하고, <span class="icon-style">🧠</span>심리학자처럼 사람들 마음을 꿰뚫어 보며, <span class="icon-style">🗣️</span>이야기꾼처럼 매력적인 메시지를 만들죠. 광고 캠페인의 '브레인'이랄까요? "이 광고 왜 필요해?", "누구한테 무슨 말을 해야 할까?", "이게 왜 중요해?" 같은 질문에 답을 찾는 사람이에요.</p>
+                <p class="mb-4 text-lg leading-relaxed">기업이 팔고 싶은 것과 소비자가 진짜 원하는 것 사이의 '오작교' 역할도 해요. 광고 캠페인이 이상한 데로 빠지지 않게 방향을 잡아주는 <span class="icon-style">🧭</span>나침반 같기도 하고요.</p>
+            </div>
             <div class="quote">
                 <p>"광고는 “팔거나, 아니면 아무것도 아니다”." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">이 말은 광고의 핵심적인 상업적 기능을 상기시키며, 광고 기획자의 전략이 궁극적으로는 고객의 사업 목표 달성에 기여해야 함을 강조합니다.</p>
+                <p class="text-sm mt-1 text-gray-700">이 말은 광고의 핵심! 결국 광고는 물건을 팔거나 서비스를 알리는 데 도움이 되어야 한다는 뜻이에요. 기획자의 전략이 중요하겠죠?</p>
             </div>
-            <p class="mb-4">광고 기획자는 종종 ‘보이지 않는 영향력자’로 불리기도 합니다. 광고의 최종 결과물인 카피나 디자인은 작가나 아트 디렉터의 작품으로 대중에게 인식되지만, 그 창의적인 작업이 적절하고 효과적일 수 있도록 만드는 보이지 않는 토대가 바로 광고 기획자의 전략입니다.</p>
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">광고 기획자는 '보이지 않는 영향력자'로 불리기도 해요. 광고 카피나 디자인은 눈에 보이지만, 그런 멋진 결과물이 나오도록 밑그림을 그리는 게 바로 기획자의 전략이거든요!</p>
+            </div>
             
-            <div class="mt-6">
-                <h3 class="text-xl font-semibold mb-3 text-gray-700">표 1: 광고 기획자의 용어 해설</h3>
-                <p class="mb-3 text-sm text-gray-600">아래 용어를 클릭하면 설명을 볼 수 있습니다. 광고 분야, 특히 광고 기획의 세계를 이해하려면 몇 가지 기본 용어를 알아두는 것이 좋습니다.</p>
-                <ul class="space-y-2">
-                    <li class="term-item p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
-                        <strong class="text-orange-600">타겟 고객 (Target Audience)</strong>
-                        <p class="term-definition mt-1 text-sm text-gray-700">광고를 통해 도달하고자 하는 특정 소비자 집단.</p>
+            <div class="mt-8">
+                <h3 class="text-2xl font-poppins font-semibold mb-4 text-center text-indigo-600">🚀 광고 기획자 필수 용어! (클릭!)</h3>
+                <p class="mb-4 text-center text-gray-600">광고 세계, 특히 기획 분야를 이해하려면 이 정도는 알아두자구요!</p>
+                <ul class="space-y-3">
+                    <li class="term-item p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                        <strong class="text-indigo-700 font-semibold text-lg">타겟 고객 (Target Audience)</strong>
+                        <p class="term-definition mt-1 text-sm text-gray-700">광고를 통해 마음을 사로잡고 싶은 특정 사람들!</p>
                     </li>
-                    <li class="term-item p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
-                        <strong class="text-orange-600">통찰력 (Insight)</strong>
-                        <p class="term-definition mt-1 text-sm text-gray-700">타겟 고객에 대한 깊은 이해를 통해 그들과 소통할 새로운 방법을 발견하는 것.</p>
+                    <li class="term-item p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                        <strong class="text-indigo-700 font-semibold text-lg">통찰력 (Insight)</strong>
+                        <p class="term-definition mt-1 text-sm text-gray-700">타겟 고객의 숨겨진 마음을 읽어내서 "아하!"하고 무릎을 탁 치게 만드는 발견!</p>
                     </li>
-                    <li class="term-item p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
-                        <strong class="text-orange-600">전략 (Strategy)</strong>
-                        <p class="term-definition mt-1 text-sm text-gray-700">광고가 목표를 달성하기 위한 주요 계획 또는 접근 방식.</p>
+                    <li class="term-item p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                        <strong class="text-indigo-700 font-semibold text-lg">전략 (Strategy)</strong>
+                        <p class="term-definition mt-1 text-sm text-gray-700">광고 목표 달성을 위한 큰 그림, 핵심 계획!</p>
                     </li>
-                    <li class="term-item p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
-                        <strong class="text-orange-600">브랜드 포지셔닝 (Brand Positioning)</strong>
-                        <p class="term-definition mt-1 text-sm text-gray-700">경쟁 브랜드와 비교하여 소비자의 마음속에 특정 브랜드가 인식되는 방식.</p>
+                    <li class="term-item p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                        <strong class="text-indigo-700 font-semibold text-lg">브랜드 포지셔닝 (Brand Positioning)</strong>
+                        <p class="term-definition mt-1 text-sm text-gray-700">다른 브랜드들 사이에서 우리 브랜드만 딱! 떠오르게 만드는 마법!</p>
                     </li>
-                    <li class="term-item p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
-                        <strong class="text-orange-600">브리프 (The Brief)</strong>
-                        <p class="term-definition mt-1 text-sm text-gray-700">광고 과제, 목표, 고객, 핵심 메시지 등을 크리에이티브 팀에게 전달하는 문서.</p>
+                    <li class="term-item p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                        <strong class="text-indigo-700 font-semibold text-lg">브리프 (The Brief)</strong>
+                        <p class="term-definition mt-1 text-sm text-gray-700">광고 제작팀에게 "이렇게 만들어줘!"하고 전달하는 비밀 작전 지령서.</p>
                     </li>
-                    <li class="term-item p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
-                        <strong class="text-orange-600">빅 아이디어 (Big Idea)</strong>
-                        <p class="term-definition mt-1 text-sm text-gray-700">전체 광고 캠페인의 중심이 되는, 기억에 남고 설득력 있는 핵심 콘셉트.</p>
+                    <li class="term-item p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                        <strong class="text-indigo-700 font-semibold text-lg">빅 아이디어 (Big Idea)</strong>
+                        <p class="term-definition mt-1 text-sm text-gray-700">광고 캠페인 전체를 관통하는, 한 번 들으면 잊히지 않는 쩐~득한 핵심 콘셉트!</p>
                     </li>
                 </ul>
             </div>
         </section>
 
-        <section id="part2" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제2부: 마법의 재료, "빅 아이디어" – 캠페인의 <span class="icon-style">💡</span>북극성</h2>
-            <p class="mb-4">광고 캠페인에서 "빅 아이디어"란 무엇일까요? 단순히 재치 있는 슬로건이나 눈에 띄는 이미지를 넘어선 개념입니다. 빅 아이디어는 기억에 남고, 광고하는 제품이나 서비스와 관련성이 높으며, 다양한 광고 매체와 시간에 걸쳐 지속적으로 힘을 발휘할 수 있는 중심적이고 통일된 테마를 의미합니다. 마치 ‘아하!’하는 순간처럼 광고 캠페인이 사람들의 마음속에 깊이 각인되도록 만드는 핵심 요소입니다.</p>
+        <section id="part2" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제2부: 마법의 재료, "빅 아이디어"! 🔮 캠페인의 <span class="text-pink-500">북극성</span></h2>
+            <img src="https://placehold.co/700x350/FFF7E6/F97316?text=빅+아이디어란+무엇일까?" alt="빅 아이디어 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">광고 캠페인에서 "빅 아이디어"란 뭘까요? 그냥 웃긴 말장난이나 예쁜 그림이 아니에요. 빅 아이디어는 기억에 확 남고, 제품이나 서비스랑 찰떡같이 어울리면서, 여러 광고 채널에서 오랫동안 힘을 발휘하는 중심 테마예요. '아하!'하는 순간처럼 사람들 마음에 콕 박히는 거죠!</p>
+            </div>
             <div class="quote">
                 <p>"광고가 빅 아이디어에 기반하지 않으면, 밤바다의 배처럼 흔적 없이 사라질 것이다." – 데이비드 오길비</p>
-                 <p class="text-sm mt-1">강력한 중심 개념 없이는 광고에 들인 모든 노력이 헛수고가 될 수 있음을 경고합니다.</p>
+                 <p class="text-sm mt-1 text-gray-700">강력한 중심 아이디어가 없으면 광고에 쏟은 노력이 물거품이 될 수 있다는 경고! 😱</p>
             </div>
              <div class="quote">
                 <p>"빅 아이디어는 대개 단순한 아이디어다." – 데이비드 오길비</p>
-                 <p class="text-sm mt-1">‘빅’이라는 단어가 복잡함을 의미하지 않음을 명확히 합니다. 단순함은 강력한 힘을 지닙니다.</p>
+                 <p class="text-sm mt-1 text-gray-700">'빅'하다고 복잡한 건 아니에요. 단순함 속에 강력한 힘이 숨어있답니다!</p>
             </div>
-            <p class="mb-4">빅 아이디어는 왜 중요할까요? 오늘날 사람들은 매일 엄청난 양의 메시지에 노출됩니다. 빅 아이디어는 이러한 정보의 홍수 속에서 광고 캠페인이 주목받고 기억되도록 돕습니다.</p>
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">빅 아이디어가 왜 중요하냐구요? 우린 매일 엄청난 정보 폭탄을 맞고 살잖아요. 빅 아이디어는 그 속에서 우리 광고가 주목받고 기억되게 도와줘요.</p>
+            </div>
             <div class="quote">
-                <p>"훌륭한 아이디어는 고위직이나 크리에이티브 담당자만의 전유물이 아니다. 최고의 아이디어 중 일부는 광고주 담당자, 연구원, 그리고 다른 사람들로부터 나온다. 이를 장려하라. 얻을 수 있는 모든 아이디어가 필요하다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">이 말은 광고 기획자를 꿈꾸는 이들에게 매우 고무적입니다. 연구와 전략적 사고가 빅 아이디어에 영감을 줄 수 있음을 보여줍니다.</p>
+                <p>"훌륭한 아이디어는 높은 사람이나 크리에이티브 담당자만 내는 게 아니다... 이를 장려하라. 얻을 수 있는 모든 아이디어가 필요하다." – 데이비드 오길비</p>
+                <p class="text-sm mt-1 text-gray-700">이거 완전 희소식! 광고 기획자를 꿈꾼다면, 여러분의 생각과 조사가 빅 아이디어의 씨앗이 될 수 있다는 거예요! 🌱</p>
             </div>
-            <p class="mb-4">빅 아이디어는 단순히 광고를 기억하게 만들거나 제품을 판매하는 것 이상의 역할을 할 수 있습니다. 이는 사람들이 특정 카테고리, 브랜드, 심지어 자기 자신에 대해 생각하는 방식을 미묘하게 변화시켜 지속적인 행동 변화를 유도하는 강력한 ‘조직 원리’로 작용할 수 있습니다.</p>
             <div class="activity-idea">
-                <h4 class="font-semibold text-lg text-teal-700">💡 학생들을 위한 활동 아이디어!</h4>
-                <p class="mt-1">가장 좋아하는 광고 캠페인을 분석해 보세요. 그 캠페인의 "빅 아이디어"는 무엇이라고 생각하나요? 왜 그것이 단순하면서도 강력하다고 느끼나요? 친구들과 이야기 나눠보세요!</p>
+                <h4 class="text-xl">💡 핵인싸 활동 아이디어!</h4>
+                <p class="mt-2">네가 제일 좋아하는 광고 캠페인 분석해 봐! 그 캠페인의 "빅 아이디어"는 뭘까? 왜 그게 단순하면서도 강력하다고 생각해? 친구들이랑 톡으로 공유 ㄱㄱ!</p>
+            </div>
+
+            <div class="gemini-feature">
+                <h4 class="font-poppins font-semibold text-xl text-purple-700 mb-3">✨ 빅 아이디어 공장 (feat. Gemini)</h4>
+                <p class="text-sm text-gray-700 mb-4">제품/서비스 키워드 넣고 빅 아이디어 영감 뿜뿜! 🚀</p>
+                <input type="text" id="bigIdeaKeywords" class="gemini-input" placeholder="예: 매운맛 젤리, Z세대 스트레스 해소">
+                <button id="generateBigIdea" class="gemini-button">
+                    아이디어 생성!
+                    <span id="bigIdeaLoading" class="loading-spinner" style="display: none;"></span>
+                </button>
+                <div id="bigIdeaResult" class="gemini-result">여기에 빅 아이디어 제안이 표시됩니다...</div>
             </div>
         </section>
 
-        <section id="part3" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제3부: 누구에게 말하고 있는가? 소비자 이해 – 당신의 <span class="icon-style">👥</span>비밀 슈퍼파워</h2>
-            <p class="mb-4">모든 훌륭한 광고의 기초는 바로 소비자에 대한 깊은 이해입니다. 만약 광고를 보는 사람들을 제대로 이해하지 못한다면, 광고는 그저 추측에 불과할 것입니다. 사람들의 마음을 움직이는 광고는 그들의 필요, 욕구, 두려움, 그리고 열망에 말을 겁니다.</p>
-            <div class="quote">
-                <p>"소비자는 바보가 아니다. 그녀는 당신의 아내다. 단순한 슬로건과 몇 개의 공허한 형용사로 그녀가 무언가를 사도록 설득할 수 있다고 가정한다면, 당신은 그녀의 지성을 모욕하는 것이다. 그녀는 당신이 줄 수 있는 모든 정보를 원한다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">광고 기획자는 소비자를 존중하고 유익하며 진정한 가치를 제공해야 합니다.</p>
+        <section id="part3" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제3부: 누구한테 말하는 거야? 소비자 <span class="text-pink-500">궁예</span> 되기 🔮</h2>
+             <img src="https://placehold.co/700x350/E0F2FE/0EA5E9?text=소비자+이해하기" alt="소비자 분석 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">모든 대박 광고의 비밀은 바로 소비자를 깊이 이해하는 거예요. 광고 보는 사람들을 모르면 그냥 '아무 말 대잔치'가 될 뿐! 사람들 마음을 움직이는 광고는 그들의 필요, 욕구, 두려움, 꿈에 말을 걸죠.</p>
             </div>
             <div class="quote">
-                <p>"자신의 가족이 읽기를 원치 않는 광고는 절대 쓰지 마라. 당신은 아내에게 거짓말을 하지 않을 것이다. 내 아내에게도 거짓말하지 마라." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">광고의 윤리적 차원을 강조하며 신뢰 구축의 중요성을 일깨웁니다.</p>
+                <p>"소비자는 바보가 아니다. 그녀는 당신의 아내다... 그녀는 당신이 줄 수 있는 모든 정보를 원한다." – 데이비드 오길비</p>
+                <p class="text-sm mt-1 text-gray-700">소비자를 존중하고, 진짜 유용하고 솔직한 정보를 줘야 한다는 말씀!</p>
             </div>
-            <p class="mb-4">광고 기획자는 어떻게 ‘사람 탐정’이 될 수 있을까요? <span class="icon-style">📊</span>시장 조사, <span class="icon-style">📝</span>설문 조사, <span class="icon-style">💬</span>포커스 그룹 인터뷰, <span class="icon-style">👂</span>소셜 리스닝, <span class="icon-style">🗺️</span>공감 지도 만들기 등 다양한 도구와 기술을 활용합니다. 이러한 활동의 목표는 소비자에 대한 깊고 종종 말로 표현되지 않는 진실, 즉 ‘통찰력(insight)’을 찾는 것입니다.</p>
-            <div class="quote">
-                <p>"당신은 정지된 군대에게 광고하는 것이 아니라, 움직이는 행렬에게 광고하는 것이다... 광고는 마치 레이더 탐지기와 같아서, 새로운 잠재 고객이 시장에 진입할 때마다 끊임없이 그들을 찾아낸다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">소비자 행동과 인구 통계는 끊임없이 변화합니다. 현재와 미래의 고객을 이해하기 위해 지속적으로 호기심을 갖고 ‘레이더를 계속 작동시켜야’ 합니다.</p>
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">광고 기획자는 어떻게 '사람 탐정'이 될 수 있을까요? <span class="icon-style">📊</span>시장 조사, <span class="icon-style">📝</span>설문, <span class="icon-style">💬</span>인터뷰, <span class="icon-style">👂</span>SNS 엿보기, <span class="icon-style">🗺️</span>공감 지도 그리기 등등! 목표는 소비자에 대한 깊고, 때로는 말로 표현 못 할 진실, 즉 '통찰력(insight)'을 찾는 거예요.</p>
+            </div>
+             <div class="quote">
+                <p>"당신은 정지된 군대에게 광고하는 것이 아니라, 움직이는 행렬에게 광고하는 것이다..." – 데이비드 오길비</p>
+                <p class="text-sm mt-1 text-gray-700">소비자는 계속 변해요! 지금 고객, 미래 고객을 알려면 항상 호기심 레이더를 켜둬야 해요!📡</p>
             </div>
             <div class="activity-idea">
-                <h4 class="font-semibold text-lg text-teal-700">💡 학생들을 위한 활동 아이디어!</h4>
-                <p class="mt-1">가장 좋아하는 앱이나 제품의 사용자를 위한 ‘페르소나(가상 인물)’를 만들어 보세요. 그들의 이름, 나이, 취미, 습관, 좋아하는 것, 싫어하는 것은 무엇일까요? 이 페르소나가 왜 이 제품을 좋아할까요?</p>
+                <h4 class="text-xl">💡 소비자 연구가 활동!</h4>
+                <p class="mt-2">네 최애 앱이나 제품 사용자를 위한 '페르소나(가상 인물)'를 만들어봐. 이름, 나이, 취미, 습관, 좋아하는 거, 싫어하는 거 등등! 이 페르소나가 왜 이 제품을 쓸까?</p>
+            </div>
+
+            <div class="gemini-feature">
+                <h4 class="font-poppins font-semibold text-xl text-purple-700 mb-3">✨ 페르소나 심층 분석 (feat. Gemini)</h4>
+                <p class="text-sm text-gray-700 mb-4">제품/서비스랑 타겟 고객 정보 넣고, 더 자세한 페르소나 파헤치기! 🕵️‍♀️</p>
+                <input type="text" id="personaProduct" class="gemini-input" placeholder="제품/서비스 (예: AI 스터디 플래너)">
+                <textarea id="personaTarget" class="gemini-textarea" rows="2" placeholder="간략한 타겟 고객 (예: 시험기간만 되면 바짝 공부하는 중고등학생)"></textarea>
+                <button id="generatePersona" class="gemini-button">
+                    페르소나 분석!
+                    <span id="personaLoading" class="loading-spinner" style="display: none;"></span>
+                </button>
+                <div id="personaResult" class="gemini-result">여기에 페르소나 상세 정보가 표시됩니다...</div>
             </div>
         </section>
-
-        <section id="part4" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제4부: 무엇이 브랜드를 돋보이게 하는가? (브랜드 이미지 & 포지셔닝) – 브랜드에 <span class="icon-style">🌟</span>독특한 목소리 부여하기</h2>
-            <p class="mb-4">브랜드 이미지란 무엇일까요? 그것은 마치 브랜드의 ‘성격’과 같습니다. 사람들이 특정 브랜드에 대해 갖는 전반적인 인상과 느낌으로, 모든 커뮤니케이션과 활동을 통해 시간이 지남에 따라 구축됩니다.</p>
+        
+        <section id="part4" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제4부: 우리 브랜드, 어떻게 <span class="text-pink-500">인싸</span> 만들까? (브랜드 이미지 & 포지셔닝)</h2>
+            <img src="https://placehold.co/700x350/FEF3C7/D97706?text=브랜드+이미지와+포지셔닝" alt="브랜드 개성 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">브랜드 이미지는 뭘까요? 브랜드의 '성격' 같은 거예요. 사람들이 특정 브랜드에 대해 갖는 느낌이나 인상이죠. 모든 활동을 통해 차곡차곡 쌓이는 거랍니다.</p>
+            </div>
             <div class="quote">
                 <p>"모든 광고는 브랜드 이미지라는 복합적인 상징에 기여해야 한다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">브랜드 구축에 있어 일관성과 장기적인 사고의 중요성을 말해줍니다. 모든 광고는 그 이미지를 구축하는 벽돌 하나하나와 같습니다.</p>
+                <p class="text-sm mt-1 text-gray-700">모든 광고는 브랜드 이미지를 만드는 벽돌 한 장! 일관성과 장기적인 안목이 중요해요.</p>
+            </div>
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">브랜드 포지셔닝은요? 다른 브랜드랑 비교했을 때, 우리 브랜드가 타겟 고객에게 "이것만큼은 우리가 최고!"라고 인식시키는 거예요. 고객 마음속에 특정 자리를 차지하는 거죠.</p>
             </div>
              <div class="quote">
-                <p>"제품의 개성은 여러 가지 요소의 혼합체다 – 이름, 포장, 가격, 광고 스타일, 그리고 무엇보다도 제품 자체의 본질." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">광고 기획자는 전체적인 관점에서 생각해야 하며, 광고 전략은 브랜드의 다른 모든 측면과 조화를 이루어야 합니다.</p>
-            </div>
-            <p class="mb-4">브랜드 포지셔닝이란 무엇일까요? 이는 경쟁 브랜드와 비교하여 특정 브랜드가 타겟 고객에게 중요하게 여겨지는 방식으로 어떻게 다르고 더 나은지를 정의하는 것입니다. 소비자의 마음속에 특정 아이디어나 혜택을 ‘소유’하는 것과 같습니다.</p>
-            <div class="quote">
                 <p>"가장 중요한 결정은 제품을 어떻게 포지셔닝할 것인가이다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">포지셔닝은 매우 중요한 전략적 선택이며, 광고 기획자의 핵심 과제입니다.</p>
-            </div>
-            <div class="quote">
-                <p>"대부분의 제조사는 브랜드 이미지에 어떤 제한을 두는 것을 꺼린다... 결국 아무런 개성이 없는, 흐리멍덩한 중성적인 브랜드로 끝나고 만다. 거세된 수탉은 결코 닭장을 지배할 수 없다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">모호한 포지셔닝의 위험성과, 독특한 브랜드 개성의 힘을 강조합니다. 때로는 전략적 용기가 필요합니다.</p>
+                <p class="text-sm mt-1 text-gray-700">포지셔닝은 광고 기획자의 핵심 미션! 아주 중요한 전략적 선택이에요.</p>
             </div>
              <div class="quote">
-                <p>"6개월마다 '새로운 것을 내놓으라'는 모든 압력에 맞서 한 가지 스타일을 고수하려면 비범한 용기가 필요하다… 그러나 일관된 이미지를 창조할 두뇌와 오랜 기간 동안 그것을 고수할 안정성을 가진 광고주에게는 황금 같은 보상이 기다린다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">장기적인 전략을 옹호해야 합니다. 핵심 브랜드 이미지와 포지셔닝은 일관성을 유지해야 강력한 브랜드 자산을 구축할 수 있습니다.</p>
-            </div>
-             <div class="quote">
-                <p>"포지셔닝이 발명되기 전에도 많은 성공적인 광고가 만들어졌다... 아무도 당신의 광고를 읽거나 광고를 보지 않는다면, 올바른 포지셔닝을 갖는 것이 별 도움이 되지 않는다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">포지셔닝은 매우 중요하지만, 그것만으로는 충분하지 않습니다. 전략은 설득력 있는 크리에이티브 실행으로 생명을 불어넣어야 합니다.</p>
+                <p>"대부분의 제조사는 브랜드 이미지에 어떤 제한을 두는 것을 꺼린다... 결국 아무런 개성이 없는, 흐리멍덩한 중성적인 브랜드로 끝나고 만다." – 데이비드 오길비</p>
+                <p class="text-sm mt-1 text-gray-700">애매한 포지셔닝은 NO! 확실한 개성이 있어야 기억에 남아요. 때론 용기가 필요하죠!🦁</p>
             </div>
         </section>
 
-        <section id="part5" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제5부: 기획자의 비밀 무기: <span class="icon-style">❓</span>호기심과 <span class="icon-style">🔬</span>조사 – 올바른 질문하기</h2>
-            <p class="mb-4">조사가 지루하다고 생각하나요? 천만의 말씀입니다! 조사는 사람, 시장, 브랜드를 이해하는 발견의 모험입니다. 훌륭한 전략과 창의적인 아이디어의 연료가 바로 조사입니다.</p>
+        <section id="part5" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제5부: 기획자의 비밀병기: <span class="text-pink-500">궁금증</span>과 <span class="text-pink-500">탐구생활</span>! 🧐</h2>
+            <img src="https://placehold.co/700x350/E0E7FF/4F46E5?text=호기심과+조사" alt="조사와 발견 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">조사가 지루하다구요? 댓츠 노노! 🙅‍♀️ 조사는 사람, 시장, 브랜드를 알아가는 신나는 탐험이에요. 훌륭한 전략과 창의적 아이디어의 연료가 바로 조사랍니다!</p>
+            </div>
             <div class="quote">
                 <p>"광고 어휘에서 가장 중요한 단어는 테스트(TEST)다... 테스트를 멈추지 않으면, 당신의 광고는 결코 개선을 멈추지 않을 것이다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">광고에 대한 데이터 기반의 반복적인 접근 방식을 강력하게 지지합니다. 성공과 실패 모두에서 배우고 지속적으로 개선하려는 마음가짐을 장려합니다.</p>
+                <p class="text-sm mt-1 text-gray-700">계속 테스트하고, 배우고, 발전하는 자세! 성공과 실패 모두에서 배울 게 있어요.</p>
             </div>
              <div class="quote">
                 <p>"우리는 무지의 무정부 상태보다 지식의 규율을 선호한다. 우리는 돼지가 송로버섯을 쫓듯 지식을 추구한다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">이것이 바로 광고 기획자의 신조입니다! 추측보다는 깊은 이해와 증거 기반 의사 결정의 가치를 강조합니다.</p>
-            </div>
-            <p class="mb-4">지식은 힘입니다. 본능에만 의존해서는 안 됩니다.</p>
-            <div class="quote">
-                <p>"만약 당신이 급성 맹장염에 걸렸다고 가정해보자… 해부학 책을 좀 읽고 그 수술을 할 줄 아는 외과 의사를 원하겠는가, 아니면... 자신의 본능에 의존하는 외과 의사를 선호하겠는가? 왜 제조업체가 자신의 돈을… 당신의 본능에 걸어야 하는가?" – 데이비드 오길비</p>
-                <p class="text-sm mt-1">광고에서 기초 지식의 중요성에 대한 강력한 주장입니다. 광고 기획자는 광고 원칙, 소비자 행동 및 연구 방법에 대한 견고한 지식 기반을 구축해야 합니다.</p>
+                <p class="text-sm mt-1 text-gray-700">이것이 광고 기획자의 모토! 감으로 때려 맞추기보단, 확실한 근거를 바탕으로 결정해야죠.</p>
             </div>
             <div class="activity-idea">
-                <h4 class="font-semibold text-lg text-teal-700">💡 학생들을 위한 활동 아이디어!</h4>
-                <p class="mt-1">최근에 구매한 물건(과자, 학용품, 게임 등)을 생각해 보세요. 그 제품의 광고를 만들기 전에 광고 기획자는 어떤 질문들을 조사했을까요? (예: 누가 이 제품을 살까? 왜 살까? 언제 어디서 사용할까? 경쟁 제품은 무엇일까?)</p>
+                <h4 class="text-xl">💡 꼬꼬무 탐정 활동! (꼬리에 꼬리를 무는 질문)</h4>
+                <p class="mt-2">최근에 산 물건(과자, 폰케이스, 게임 아이템 등)을 떠올려봐. 그 광고를 만들기 전에 기획자는 어떤 질문들을 파고들었을까? (예: 누가 살까? 왜? 언제 어디서 쓸까? 경쟁템은?)</p>
             </div>
         </section>
 
-        <section id="part6" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제6부: 아이디어를 현실로: 전략에서 광고까지 – <span class="icon-style">🛠️</span>크리에이티브 과정에서 기획자의 역할</h2>
-            <p class="mb-4">광고 기획자는 모든 연구와 전략을 크리에이티브 팀(작가, 아트 디렉터)을 위한 명확하고 영감을 주는 문서, 즉 ‘크리에이티브 브리프’로 전환합니다. 이 브리프는 전략에서 실행으로 넘어가는 다리 역할을 합니다.</p>
-            <p class="mb-4">커뮤니케이션에서 명확성은 매우 중요합니다. 말은 힘을 갖습니다.</p>
-            <div class="quote">
-                <p>"교육받지 못한 사람들에게 광고할 때 과장된 언어를 사용하는 것은 실수다. 나는 한때 헤드라인에 'OBSOLETE(시대에 뒤떨어진)'라는 단어를 사용했는데, 주부의 33%가 그 의미를 전혀 몰랐다는 것을 발견했다…" – 데이비드 오길비</p>
-                <p class="text-sm mt-1">광고 기획자는 고객과 크리에이티브 팀 모두에게 자신의 전략을 명확하게 전달해야 합니다. 단순하고 정확한 언어를 사용해야 합니다.</p>
+        <section id="part6" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제6부: 아이디어를 현실로! 전략에서 광고까지 🪄 <span class="text-pink-500">기획자의 역할</span></h2>
+             <img src="https://placehold.co/700x350/D1FAE5/059669?text=전략에서+광고로" alt="아이디어 현실화 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">광고 기획자는 모든 연구와 전략을 '크리에이티브 브리프'라는 문서로 만들어요. 이건 작가, 아트 디렉터 같은 크리에이티브 팀에게 주는 명확하고 영감을 주는 가이드라인이죠. 전략에서 실제 광고로 넘어가는 다리 역할!</p>
             </div>
-            <p class="mb-4">단순히 말하는 것을 넘어 보여주는 것, 즉 시각 자료의 힘은 강력합니다.</p>
             <div class="quote">
-                <p>"당신이 보여주는 것이 당신이 말하는 것보다 더 중요하다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">시각적 커뮤니케이션의 영향을 강조합니다. 전략이 시각적으로 어떻게 전환될지도 고려해야 합니다.</p>
+                <p>"교육받지 못한 사람들에게 광고할 때 과장된 언어를 사용하는 것은 실수다..." – 데이비드 오길비</p>
+                <p class="text-sm mt-1 text-gray-700">광고 기획자는 고객과 팀 모두에게 전략을 쉽고 정확하게 전달해야 해요. 어려운 말 ㄴㄴ!</p>
             </div>
              <div class="quote">
-                <p>"갤럽 박사는 당신이 말로만 하고 그림으로 보여주지 않으면 시청자는 즉시 잊어버린다고 보고한다... 소리를 끈 채로 광고를 틀어보라. 소리 없이 전달되지 않는다면 그것은 쓸모없는 것이다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">시각적 커뮤니케이션의 강점에 대한 실질적인 테스트입니다. 메시지와 이미지 간의 시너지 효과가 필요함을 강조합니다.</p>
+                <p>"당신이 보여주는 것이 당신이 말하는 것보다 더 중요하다." – 데이비드 오길비</p>
+                <p class="text-sm mt-1 text-gray-700">백 마디 말보다 한 번 보여주는 게 더 강력할 수 있다는 것! 시각적인 효과도 생각해야 해요.</p>
             </div>
-            <p class="mb-4">좋은 크리에이티브 브리프는 창의성을 제한하는 것이 아니라 오히려 창의성을 특정 방향으로 이끕니다. 이는 창의적인 팀이 탐색하고 혁신할 수 있는 명확한 경계와 목표(‘집중’)를 제공하는 ‘놀이터’ 역할을 합니다. 광고는 팀 스포츠입니다. 기획자와 크리에이티브는 함께 일합니다.</p>
+            <div class="text-content-block">
+                 <p class="mb-4 text-lg leading-relaxed">좋은 크리에이티브 브리프는 창의력을 제한하는 게 아니라, 오히려 길을 안내해줘요. 창의적인 팀이 신나게 아이디어를 펼칠 수 있는 '놀이터'를 만들어주는 셈이죠. 광고는 팀플! 기획자와 크리에이티브는 함께 달립니다! 🏃‍♀️🏃‍♂️</p>
+            </div>
         </section>
 
-        <section id="part7" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제7부: 최고로부터 배우기: 당신의 여정을 위한 <span class="icon-style">🏆</span>시대를 초월한 조언 – 광고적 두뇌 구축하기</h2>
-            <p class="mb-4">배움의 여정은 결코 끝나지 않습니다. 영원한 학생이 되어야 합니다.</p>
+        <section id="part7" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제7부: 고인물에게 배우자! 📜 <span class="text-pink-500">꿀팁 대방출</span></h2>
+            <img src="https://placehold.co/700x350/FFFBEB/F59E0B?text=오길비의+황금률" alt="지혜와 조언 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-4 text-lg leading-relaxed">배움에는 끝이 없어요. 항상 새로운 것을 배우는 '만렙 학생'이 되어야 합니다!</p>
+            </div>
             <div class="quote">
                 <p>"오길비 앤 매더는 두 가지 일을 한다: 우리는 고객을 돌보고, 젊은 광고인들을 가르친다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">학습이 성공적인 광고 조직의 핵심 가치임을 보여줍니다. 학습 기회와 멘토를 적극적으로 찾아야 합니다.</p>
-            </div>
-            <div class="quote">
-                <p>"훈련은 수습생에게만 국한되어서는 안 된다. 그것은 지속적인 과정이어야 하며, 대행사의 전체 전문 인력을 포함해야 한다." – 데이비드 오길비</p>
-                 <p class="text-sm mt-1">평생 학습을 강조합니다. 광고 환경은 항상 변화하므로 성장 마인드셋과 지속적인 전문성 개발이 필요합니다.</p>
-            </div>
-            <p class="mb-4">규율과 지식은 천재성의 기초입니다. 단순히 영감의 섬광에 의존하는 것이 아니라 자신의 기술을 아는 것이 중요합니다.</p>
-            <div class="quote">
-                <p>"셰익스피어는 엄격한 규율로 소네트를 썼다… 모차르트는 똑같이 엄격한 규율 내에서 소나타를 썼다… 그것들이 지루했는가?" – 데이비드 오길비</p>
-                <p class="text-sm mt-1">규율과 구조가 창의성을 억누르는 것이 아니라 실제로는 가능하게 할 수 있다고 주장합니다. 훌륭한 전략은 종종 구조화된 접근 방식에서 나옵니다.</p>
+                <p class="text-sm mt-1 text-gray-700">배움이 성공의 핵심! 배울 기회와 멘토를 적극적으로 찾아보세요.</p>
             </div>
             
-            <div class="mt-6">
-                <h3 class="text-xl font-semibold mb-3 text-gray-700">표 2: 예비 기획자를 위한 오길비의 황금률 (청소년을 위해 쉽게 정리!)</h3>
-                <p class="mb-3 text-sm text-gray-600">데이비드 오길비의 지혜는 광고 기획자를 꿈꾸는 모든 이에게 귀중한 지침이 될 수 있습니다. 그의 핵심 원칙들을 간결하게 정리하면 다음과 같습니다. 각 카드를 클릭해보세요!</p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item">
-                        <h4 class="font-bold text-lg text-orange-700">매우 호기심을 가져라</h4>
-                        <p class="term-definition mt-1 text-sm">항상 "왜?"라고 질문하고 사람들을 깊이 이해하기 위해 파고들어라.</p>
+            <div class="mt-8">
+                <h3 class="text-2xl font-poppins font-semibold mb-4 text-center text-amber-600">🏆 오길비의 황금률 (10대 Ver. 클릭!)</h3>
+                <p class="mb-4 text-center text-gray-600">광고계의 전설, 데이비드 오길비의 지혜! 광고 기획자를 꿈꾼다면 꼭 기억하세요. 각 카드를 클릭!</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins">핵인싸급 호기심!</h4>
+                        <p class="term-definition mt-2 text-sm">항상 "왜?"라고 묻고, 사람들 마음속 깊이 파고들어 봐!</p>
                     </div>
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item">
-                        <h4 class="font-bold text-lg text-orange-700">하나의 크고 단순한 아이디어를 목표로 하라</h4>
-                        <p class="term-definition mt-1 text-sm">핵심 메시지를 강력하고 이해하기 쉽게 만들어라.</p>
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins">하나의 크고 단순한 아이디어!</h4>
+                        <p class="term-definition mt-2 text-sm">핵심 메시지는 강력하고 이해하기 쉽게! 임팩트 빡!</p>
                     </div>
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item">
-                        <h4 class="font-bold text-lg text-orange-700">청중을 존중하라</h4>
-                        <p class="term-definition mt-1 text-sm">사람들을 얕보지 말고, 실제 정보를 제공하라.</p>
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins">청중 리스펙!</h4>
+                        <p class="term-definition mt-2 text-sm">사람들 무시하지 말고, 진짜 정보, 찐정보를 줘!</p>
                     </div>
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item">
-                        <h4 class="font-bold text-lg text-orange-700">자신의 분야를 잘 알아라</h4>
-                        <p class="term-definition mt-1 text-sm">광고, 사람, 브랜드에 대해 가능한 모든 것을 배워라.</p>
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins">네 분야 만렙 찍기!</h4>
+                        <p class="term-definition mt-2 text-sm">광고, 사람, 브랜드에 대해 배울 수 있는 건 다 배워!</p>
                     </div>
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item">
-                        <h4 class="font-bold text-lg text-orange-700">아이디어를 테스트하라</h4>
-                        <p class="term-definition mt-1 text-sm">그냥 추측하지 말고, 무엇이 효과가 있는지 알아내라.</p>
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins">아이디어 실험 ㄱㄱ!</h4>
+                        <p class="term-definition mt-2 text-sm">뇌피셜 말고, 뭐가 진짜 먹히는지 테스트해 봐!</p>
                     </div>
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item">
-                        <h4 class="font-bold text-lg text-orange-700">복잡하지 않고 명확하게 하라</h4>
-                        <p class="term-definition mt-1 text-sm">생각을 설명할 때 단순한 언어를 사용하라.</p>
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins">복잡한 거 ㄴㄴ, 명확하게!</h4>
+                        <p class="term-definition mt-2 text-sm">네 생각을 설명할 땐 쉽고 간단한 말로!</p>
                     </div>
-                    <div class="golden-rule-card p-4 rounded-lg shadow hover:shadow-lg transition term-item md:col-span-1 lg:col-span-1">
-                        <h4 class="font-bold text-lg text-orange-700">강력한 브랜드 개성을 구축하라</h4>
-                        <p class="term-definition mt-1 text-sm">브랜드가 돋보이고 기억되도록 도와라.</p>
+                    <div class="golden-rule-card p-5 rounded-xl shadow-md hover:shadow-lg transition term-item md:col-span-2 lg:col-span-3 mx-auto lg:max-w-xs">
+                        <h4 class="font-bold text-xl text-amber-700 font-poppins text-center">강력한 브랜드 개성 만들기!</h4>
+                        <p class="term-definition mt-2 text-sm text-center">브랜드가 눈에 띄고 기억되도록, 매력 터지게 만들어봐!</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="part8" class="content-section scroll-mt-20">
-            <h2 class="text-2xl font-bold mb-4 text-orange-600">제8부: 당신의 광고 모험은 지금 시작된다! – <span class="icon-style">🚀</span>미래의 기획자를 위한 다음 단계</h2>
-            <p class="mb-4">광고 기획의 세계를 탐험하기 위해 오늘 당장 시작할 수 있는 일들은 무엇일까요?</p>
-            <ul class="list-disc list-inside space-y-3 mb-4 pl-4">
-                <li><strong class="text-gray-700">광고를 비판적으로 관찰하라:</strong> 단순히 광고를 보는 것을 넘어 분석하세요. 누구에게 도달하려고 하는가? 주요 메시지는 무엇인가? "빅 아이디어"는 무엇인가? 효과적인가? 왜 그런가, 또는 왜 그렇지 않은가?</li>
-                <li><strong class="text-gray-700">‘사람 관찰자’가 되어라:</strong> 사람들이 어떻게 행동하는지, 무엇에 대해 이야기하는지, 무엇을 중요하게 생각하는지에 주의를 기울이세요. 이것이 바로 비공식적인 소비자 조사입니다!</li>
-                <li><strong class="text-gray-700">읽고, 읽고, 또 읽어라:</strong> 광고(오길비의 책처럼!), 마케팅, 심리학에 관한 책을 읽으세요. 업계 블로그와 뉴스를 팔로우하는 것도 좋습니다.</li>
-                <li><strong class="text-gray-700">전략적 사고를 연습하라:</strong> 가장 좋아하는 브랜드에 대해 타겟 고객, 포지셔닝, 그리고 "빅 아이디어"가 무엇일지 정의해 보세요.</li>
-                <li><strong class="text-gray-700">커뮤니케이션 기술을 개발하라:</strong> 명확하고 설득력 있게 글을 쓰는 연습을 하고, 아이디어를 발표하는 법을 배우세요.</li>
+        <section id="part8" class="content-section scroll-mt-24">
+            <h2 class="text-3xl section-title mb-6 text-center">제8부: 너의 광고 모험, 지금 <span class="text-pink-500">START</span>! 🚀</h2>
+            <img src="https://placehold.co/700x350/CCFBF1/0D9488?text=미래의+광고+기획자" alt="시작과 도전 컨셉 이미지" class="section-image mb-6">
+            <div class="text-content-block">
+                <p class="mb-5 text-lg leading-relaxed">광고 기획의 세계, 지금 당장 탐험 시작! 뭘 할 수 있을까?</p>
+            </div>
+            <ul class="list-none space-y-4 mb-6 pl-0 text-content-block">
+                <li class="flex items-start p-3 bg-teal-50 rounded-lg"><span class="text-2xl mr-3">👀</span><div><strong class="text-teal-700 font-semibold">광고 비판적으로 관찰하기:</strong> 그냥 보지 말고 분석해 봐. 누구한테 말하는 걸까? 핵심 메시지는? "빅 아이디어"는? 효과적이야? 왜 그럴까?</div></li>
+                <li class="flex items-start p-3 bg-teal-50 rounded-lg"><span class="text-2xl mr-3">🚶‍♀️</span><div><strong class="text-teal-700 font-semibold">‘사람 관찰러’ 되기:</strong> 사람들 행동, 대화, 중요하게 생각하는 것에 주목해 봐. 이게 바로 실전 소비자 조사!</div></li>
+                <li class="flex items-start p-3 bg-teal-50 rounded-lg"><span class="text-2xl mr-3">📚</span><div><strong class="text-teal-700 font-semibold">읽고, 읽고, 또 읽기:</strong> 광고, 마케팅, 심리학 책 읽고, 업계 블로그, 뉴스도 챙겨봐!</div></li>
+                <li class="flex items-start p-3 bg-teal-50 rounded-lg"><span class="text-2xl mr-3">🧠</span><div><strong class="text-teal-700 font-semibold">전략적 사고 연습:</strong> 네 최애 브랜드의 타겟 고객, 포지셔닝, "빅 아이디어"를 정의해 봐.</div></li>
+                <li class="flex items-start p-3 bg-teal-50 rounded-lg"><span class="text-2xl mr-3">🗣️</span><div><strong class="text-teal-700 font-semibold">커뮤니케이션 스킬 UP:</strong> 명확하고 설득력 있게 글 쓰고, 네 아이디어를 발표하는 연습을 해봐!</div></li>
             </ul>
-            <p class="mb-4">모든 사람은 어딘가에서 시작합니다. 호기심과 배우려는 의지가 가장 중요한 자질입니다.</p>
             <div class="quote">
                 <p>"우리 사업에는 대규모의 인재 수혈이 필요하다. 그리고 나는 재능이 비주류, 반대자, 반항아들 사이에서 가장 많이 발견될 가능성이 있다고 믿는다." – 데이비드 오길비</p>
-                <p class="text-sm mt-1">다르게 생각한다고 느낄 수 있는 젊은이들에게 매우 고무적인 메시지입니다. 그들의 독특한 관점이 광고에서 가치가 있음을 시사합니다.</p>
+                <p class="text-sm mt-1 text-gray-700">남들과 좀 다르게 생각한다구? 오히려 좋아! 너의 독특한 시각이 광고계에서 빛을 발할 수 있어! ✨</p>
             </div>
-            <p class="font-semibold text-lg text-center mt-6 text-gray-800">이 흥미진진한 여정에 기꺼이 발을 내딛기를 바랍니다!</p>
+            <p class="font-poppins font-bold text-2xl text-center mt-8 text-fuchsia-600">이 신나는 여정에 지금 바로 탑승해봐! 😉</p>
         </section>
     </main>
 
-    <footer class="text-center py-8 text-gray-600 border-t border-gray-200 mt-12">
-        <p>&copy; 2024 광고 기획자 교육 자료. All rights reserved.</p>
-        <p class="text-sm">데이비드 오길비의 지혜를 바탕으로 제작되었습니다.</p>
+    <footer class="text-center py-10 text-gray-700 border-t-2 border-gray-200 mt-16 bg-white">
+        <p class="font-semibold">&copy; 2024 광고 천재가 되는 길. All rights reserved.</p>
+        <p class="text-sm mt-1">데이비드 오길비의 지혜를 10대 눈높이로 재해석했어요!</p>
     </footer>
 
     <script>
@@ -327,18 +475,24 @@
 
             function changeNav() {
                 let index = sections.length;
-                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                // The loop should go down to 0, not stop at 1 if sections[0] is the target.
+                // Also, ensure sections[index] is valid before accessing offsetTop.
+                while(--index >= 0 && window.scrollY + 150 < sections[index].offsetTop) {} // Adjusted offset for better accuracy
                 
                 navLinks.forEach((link) => link.classList.remove('nav-active'));
-                if (index >= 0 && navLinks[index]) {
+                if (index >= 0 && navLinks[index]) { // Check if navLinks[index] exists
                      navLinks[index].classList.add('nav-active');
-                } else if (navLinks[0] && sections[0] && window.scrollY < sections[0].offsetTop) {
-                     navLinks[0].classList.add('nav-active');
+                } else if (navLinks.length > 0 && sections.length > 0 && window.scrollY < sections[0].offsetTop - 150) { 
+                     // If scrolled to the very top, or before the first section, deactivate all or activate first.
+                     // For this case, let's ensure the first one is active if we are above it or at the very top.
+                     if(window.scrollY < sections[0].offsetTop -150) navLinks[0].classList.add('nav-active');
+                } else if (index < 0 && navLinks.length > 0) { // If index is -1 (scrolled above all sections)
+                    navLinks[0].classList.add('nav-active');
                 }
             }
 
-            changeNav();
-            window.addEventListener('scroll', changeNav);
+            changeNav(); // Call on load
+            window.addEventListener('scroll', changeNav); // Call on scroll
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -346,8 +500,14 @@
                     const targetId = this.getAttribute('href');
                     const targetSection = document.querySelector(targetId);
                     if (targetSection) {
+                        // Adjusted offset for sticky header, considering its height (approx 60-80px)
+                        // The scroll-mt-24 (96px) on sections also helps.
+                        const headerOffset = 80; 
+                        const elementPosition = targetSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
                         window.scrollTo({
-                            top: targetSection.offsetTop - 70, // Adjusted for sticky header
+                            top: offsetPosition,
                             behavior: 'smooth'
                         });
                     }
@@ -356,15 +516,107 @@
 
             const termItems = document.querySelectorAll('.term-item');
             termItems.forEach(item => {
-                item.addEventListener('click', () => {
+                item.addEventListener('click', (event) => {
+                    // Prevent click on definition itself from closing it, if definition is inside term-item
+                    if (event.target.closest('.term-definition')) {
+                        return;
+                    }
                     const definition = item.querySelector('.term-definition');
                     if (definition) {
-                        definition.style.display = definition.style.display === 'none' || definition.style.display === '' ? 'block' : 'none';
+                        const isHidden = definition.style.display === 'none' || definition.style.display === '';
+                        definition.style.display = isHidden ? 'block' : 'none';
                     }
                 });
             });
+
+            // Gemini API Integration
+            const apiKey = ""; // API 키는 비워둡니다. Canvas 환경에서 제공됩니다.
+            // Ensure the model is appropriate. gemini-2.0-flash might not exist or be the best.
+            // Using gemini-pro as a common alternative, but stick to what's instructed if specific.
+            // The instructions specify gemini-2.0-flash, so we keep it.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            async function callGeminiAPI(prompt, resultElement, loadingElement, buttonElement) {
+                if (!prompt.trim()) {
+                    resultElement.textContent = "질문이나 키워드를 입력해주세요. ✍️";
+                    return;
+                }
+
+                loadingElement.style.display = 'inline-block';
+                buttonElement.disabled = true;
+                resultElement.innerHTML = '<div class="flex justify-center items-center h-full"><div class="animate-pulse">✨ 멋진 생각 찾는 중... ✨</div></div>';
+
+
+                try {
+                    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const payload = { contents: chatHistory };
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error("API Error:", errorData);
+                        throw new Error(`API 오류 ${response.status}: ${errorData?.error?.message || '알 수 없는 오류 🤔'}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        resultElement.textContent = text;
+                    } else {
+                        console.error("Unexpected API response structure:", result);
+                        resultElement.textContent = "결과를 가져오지 못했어요. 😭 다시 시도해 보거나, 콘솔을 확인해주세요!";
+                    }
+                } catch (error) {
+                    console.error("Fetch Error:", error);
+                    resultElement.textContent = `오류 발생! 😱 ${error.message}`;
+                } finally {
+                    loadingElement.style.display = 'none';
+                    buttonElement.disabled = false;
+                }
+            }
+
+            const generateBigIdeaButton = document.getElementById('generateBigIdea');
+            const bigIdeaKeywordsInput = document.getElementById('bigIdeaKeywords');
+            const bigIdeaResultDiv = document.getElementById('bigIdeaResult');
+            const bigIdeaLoadingSpan = document.getElementById('bigIdeaLoading');
+
+            if (generateBigIdeaButton) {
+                generateBigIdeaButton.addEventListener('click', () => {
+                    const keywords = bigIdeaKeywordsInput.value;
+                    const promptText = `다음 키워드와 관련된 광고 캠페인을 위한 '빅 아이디어'에 대한 영감이나 생각해볼 만한 질문들을 3-4가지 제안해 주세요. 아이디어는 매우 창의적이고, 톡톡 튀며, 10대들이 좋아할 만한 유머나 트렌드를 반영해주세요. 답변은 한국어로, 친근하고 재미있는 말투로 해주세요. 키워드: ${keywords}`;
+                    callGeminiAPI(promptText, bigIdeaResultDiv, bigIdeaLoadingSpan, generateBigIdeaButton);
+                });
+            }
+
+            const generatePersonaButton = document.getElementById('generatePersona');
+            const personaProductInput = document.getElementById('personaProduct');
+            const personaTargetInput = document.getElementById('personaTarget');
+            const personaResultDiv = document.getElementById('personaResult');
+            const personaLoadingSpan = document.getElementById('personaLoading');
+
+            if (generatePersonaButton) {
+                generatePersonaButton.addEventListener('click', () => {
+                    const product = personaProductInput.value;
+                    const target = personaTargetInput.value;
+                    if (!product.trim() || !target.trim()) {
+                        personaResultDiv.textContent = "제품/서비스랑 타겟 고객 정보 둘 다 입력해야죠! 😉";
+                        return;
+                    }
+                    const promptText = `다음 제품/서비스와 간략한 타겟 고객 정보를 바탕으로, 해당 타겟 고객의 더욱 상세하고 입체적인 페르소나 특징, 배경 이야기, 또는 주요 고민거리를 3가지 구체적으로 생성해주세요. 내용은 광고 기획에 실질적인 도움이 되도록, 10대들이 공감할 만한 디테일을 살려서 작성해주세요. 답변은 한국어로, 재미있고 창의적인 말투로 해주세요. 제품/서비스: ${product}, 타겟 고객: ${target}`;
+                    callGeminiAPI(promptText, personaResultDiv, personaLoadingSpan, generatePersonaButton);
+                });
+            }
         });
     </script>
 
 </body>
 </html>
+
